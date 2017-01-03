@@ -28,7 +28,7 @@ class YouTubeSubtitlesScraper():
         self.driver.close()
 
     def display_all_videos(self):
-        """Clicks on "Load More" button to display all users videos."""
+        """Click on "Load More" button to display all users videos."""
         while True:
             try:
                 element = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "yt-uix-load-more")))
