@@ -18,12 +18,23 @@ class YouTubeSubtitlesScraper():
 
     def __enter__(self):
         self.driver = webdriver.Chrome('C:\Program Files\ChromeDriver\chromedriver.exe')
-        self.driver.get(self.start_url)
 
+        self.wait = WebDriverWait(self.driver, 10)
+
+        self.driver.get(self.start_url)
+        self.display_all_videos()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.driver.close()
 
+    def display_all_videos(self):
+        """Clicks on "Load More" button to display all users videos."""
+        while True:
+            try:
+                element = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "yt-uix-load-more")))
+                element.click()
+            except TimeoutException:
+                break
 
 if __name__ =="__main__":
     start_url = sys.argv[1]
