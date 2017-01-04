@@ -36,8 +36,15 @@ class YouTubeSubtitlesScraper():
             except TimeoutException:
                 break
 
+    def subtitless(self):
+        """Visits video's page, enables 'CC' to scrape the subtitles and generates filename, link and the subtitles content."""
+        videos = [(video.text, video.get_attribute("href"))
+                  for video in self.driver.find_elements_by_class_name("yt-uix-tile-link")]
+       
+
 if __name__ =="__main__":
     start_url = sys.argv[1]
 
     with YouTubeSubtitlesScraper(start_url) as scraper:
-        sys.exit()
+        for filename, link, content in scraper.subtitles():
+            time.sleep(1)
