@@ -42,11 +42,28 @@ class YouTubeSubtitlesScraper():
                   for video in self.driver.find_elements_by_class_name("yt-uix-tile-link")]
         
         for filename, link in videos:
-            #self.driver.get(link)
-           # self.enable_subtitles()
+            self.driver.get(link)
+            self.enable_subtitles()
 
-            #link = self.get_subtitles_link()
+            link = self.get_subtitles_link()
             yield filename, link, "blah"
+
+    def get_subtitles_link(self):
+        """Finds string in performance timings that contains the substring 'srv3' which is the subtitles link."""
+        time.sleep(1)
+        timings = self.driver.execute_script("return window.performance.getEntries();")
+
+        for timing in timings:
+            for value in timing.values():
+                if "srv3" in str(value):
+                    return value
+        return ""
+
+    def enable_subtitles(self):
+        """Clicks on CC(Closed Caption) button in YouTube video."""
+        show_subtitles_button = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "ytp-subtitles-button")))
+        show_subtitles_button.click()
+
 
 if __name__ =="__main__":
     start_url = sys.argv[1]
